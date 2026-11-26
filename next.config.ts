@@ -7,9 +7,11 @@ const CONTENT_SECURITY_POLICY = [
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data:",
   "connect-src 'self' https://geocoding-api.open-meteo.com https://air-quality-api.open-meteo.com",
+  "object-src 'none'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
+  "upgrade-insecure-requests",
 ].join("; ");
 
 const SECURITY_HEADERS = [
@@ -39,6 +41,9 @@ const nextConfig: NextConfig = {
     },
   },
   async headers() {
+    // Scoped to production only: Turbopack's dev-mode Fast Refresh needs
+    // 'unsafe-eval' to work, which this strict CSP intentionally omits.
+    // The deployed/production build always serves the full header set below.
     if (process.env.NODE_ENV !== "production") return [];
     return [
       {

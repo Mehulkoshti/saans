@@ -25,7 +25,7 @@ function FieldWrapper({ label, hint, error, children }: FieldWrapperProps) {
       </label>
       {children({ inputId, describedBy })}
       {hint ? (
-        <p id={hintId} className="mt-1 text-xs text-foreground/60">
+        <p id={hintId} className="mt-1 text-xs text-foreground/70">
           {hint}
         </p>
       ) : null}

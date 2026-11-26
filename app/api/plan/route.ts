@@ -6,6 +6,8 @@ import { isRateLimited } from "@/lib/rateLimit";
 import { lifestyleInputSchema } from "@/lib/validation";
 import type { AssistantPlan } from "@/lib/types";
 
+const MAX_BODY_BYTES = 10_000; // generous for this payload's shape; blocks oversized bodies early
+
 function getClientKey(request: NextRequest): string {
   const forwardedFor = request.headers.get("x-forwarded-for");
   return forwardedFor?.split(",")[0]?.trim() || "unknown";
@@ -18,6 +20,11 @@ export async function POST(request: NextRequest) {
       { error: "Too many requests. Please wait a moment and try again." },
       { status: 429 }
     );
+  }
+
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Request body too large." }, { status: 413 });
   }
 
   let rawBody: unknown;

@@ -22,13 +22,13 @@ export function SwapsSection({ swaps }: SwapsSectionProps) {
             <p className="mt-1.5 text-sm text-foreground/70">{swap.detail}</p>
             <dl className="mt-3 flex gap-6 text-sm">
               <div>
-                <dt className="text-foreground/60">Exposure cut</dt>
+                <dt className="text-foreground/70">Exposure cut</dt>
                 <dd className="font-semibold text-aqi-good">
                   ~{swap.pm25ExposureReductionPct}%
                 </dd>
               </div>
               <div>
-                <dt className="text-foreground/60">CO2 saved / week</dt>
+                <dt className="text-foreground/70">CO2 saved / week</dt>
                 <dd className="font-semibold text-aqi-good">{swap.co2ReductionKgPerWeek} kg</dd>
               </div>
             </dl>

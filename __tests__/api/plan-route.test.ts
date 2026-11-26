@@ -63,6 +63,21 @@ describe("POST /api/plan", () => {
     vi.clearAllMocks();
   });
 
+  it("rejects an oversized request body before parsing it", async () => {
+    const request = new NextRequest("http://localhost/api/plan", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "content-length": "999999",
+        "x-forwarded-for": `0.0.0.${Date.now() % 255}`,
+      },
+      body: JSON.stringify(VALID_BODY),
+    });
+
+    const response = await POST(request);
+    expect(response.status).toBe(413);
+  });
+
   it("rejects an invalid JSON body", async () => {
     const request = new NextRequest("http://localhost/api/plan", {
       method: "POST",

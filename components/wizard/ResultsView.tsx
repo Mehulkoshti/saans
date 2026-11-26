@@ -28,7 +28,7 @@ export function ResultsView({ result, onStartOver }: ResultsViewProps) {
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
         <div>
           <h2 className="text-2xl font-bold">{locationLabel}</h2>
-          <p className="text-sm text-foreground/60">
+          <p className="text-sm text-foreground/70">
             Live reading as of{" "}
             {formatHour(airQuality.observedAt, airQuality.location.timezone)}
           </p>

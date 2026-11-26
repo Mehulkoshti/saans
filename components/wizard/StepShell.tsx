@@ -22,7 +22,7 @@ export function StepShell({ step, totalSteps, title, description, children }: St
             />
           </li>
         ))}
-        <li className="ml-2 text-sm text-foreground/60">
+        <li className="ml-2 text-sm text-foreground/70">
           Step {step} of {totalSteps}
         </li>
       </ol>

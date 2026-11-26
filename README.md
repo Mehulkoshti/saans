@@ -96,7 +96,8 @@ __tests__/             Vitest unit tests for lib/ and validation
   a `server-only`-guarded module.
 - All user input is validated with Zod (bounds-checked, regex-constrained
   city names) before use.
-- The `/api/plan` route is rate-limited per client IP.
+- The `/api/plan` route is rate-limited per client IP and rejects
+  oversized request bodies before parsing (`Content-Length` check).
 - Security headers (CSP with no `unsafe-inline` in `script-src`,
   `Strict-Transport-Security`, `X-Frame-Options`, `Referrer-Policy`,
   `Permissions-Policy`, `Cross-Origin-Opener-Policy`,

@@ -101,7 +101,7 @@ export function AssistantWizard() {
           <p className="mt-6 text-lg font-medium">
             Reading live air quality for {input.cityQuery}…
           </p>
-          <p className="mt-1 text-sm text-foreground/60">
+          <p className="mt-1 text-sm text-foreground/70">
             Building your personalized routine
           </p>
         </div>
