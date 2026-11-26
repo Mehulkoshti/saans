@@ -97,8 +97,10 @@ __tests__/             Vitest unit tests for lib/ and validation
 - All user input is validated with Zod (bounds-checked, regex-constrained
   city names) before use.
 - The `/api/plan` route is rate-limited per client IP.
-- Security headers (CSP, `X-Frame-Options`, `Referrer-Policy`,
-  `Permissions-Policy`) are applied globally in `next.config.ts`.
+- Security headers (CSP with no `unsafe-inline` in `script-src`,
+  `Strict-Transport-Security`, `X-Frame-Options`, `Referrer-Policy`,
+  `Permissions-Policy`, `Cross-Origin-Opener-Policy`,
+  `Cross-Origin-Resource-Policy`) are applied globally in `next.config.ts`.
 - Every external call (Open-Meteo, DeepSeek) has a request timeout and fails
   closed to a clear error or a deterministic fallback — never a hang.
 
