@@ -14,6 +14,7 @@ export default function AssistantPage() {
     <>
       <SiteHeader />
       <main id="main-content" className="flex-1">
+        <h1 className="sr-only">Get your personalized air quality plan</h1>
         <AssistantWizard />
       </main>
       <SiteFooter />

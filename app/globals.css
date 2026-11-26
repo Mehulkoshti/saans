@@ -10,10 +10,13 @@
   --brand-foreground: #ffffff;
   --accent: #0d6e8f;
 
-  --aqi-good: #1f9d55;
-  --aqi-moderate: #c9a227;
-  --aqi-sensitive: #d97b2b;
-  --aqi-unhealthy: #d1452b;
+  /* Darkened from the raw AQI brand hues to meet WCAG AA (4.5:1) against
+     --background/--surface/--surface-muted, since these tokens are also
+     used as text color (e.g. the AQI gauge reading and risk/priority badges). */
+  --aqi-good: #197d44;
+  --aqi-moderate: #836919;
+  --aqi-sensitive: #a25a1d;
+  --aqi-unhealthy: #c44128;
   --aqi-very-unhealthy: #9b2fae;
   --aqi-hazardous: #6b1420;
 }
