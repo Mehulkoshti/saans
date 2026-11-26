@@ -2,6 +2,7 @@ import "server-only";
 import type { AirQualitySnapshot, DeterministicPlan, LifestyleInput } from "./types";
 
 const DEEPSEEK_URL = "https://api.deepseek.com/chat/completions";
+const GEMINI_URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
 const REQUEST_TIMEOUT_MS = 9_000;
 
 const SYSTEM_PROMPT = `You are Saans, an air-quality and sustainable-living assistant.
@@ -23,6 +24,55 @@ interface NarrativeFacts {
 }
 
 export async function generateNarrative(
+  facts: NarrativeFacts
+): Promise<string | null> {
+  const viaGemini = await generateNarrativeWithGemini(facts);
+  if (viaGemini) return viaGemini;
+  return generateNarrativeWithDeepSeek(facts);
+}
+
+async function generateNarrativeWithGemini(
+  facts: NarrativeFacts
+): Promise<string | null> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return null;
+
+  const model = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(
+      `${GEMINI_URL_BASE}/${model}:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+          contents: [
+            { role: "user", parts: [{ text: JSON.stringify(facts) }] },
+          ],
+          generationConfig: { temperature: 0.6, maxOutputTokens: 400 },
+        }),
+        signal: controller.signal,
+      }
+    );
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    return typeof text === "string" && text.trim().length > 0
+      ? text.trim()
+      : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function generateNarrativeWithDeepSeek(
   facts: NarrativeFacts
 ): Promise<string | null> {
   const apiKey = process.env.DEEPSEEK_API_KEY;
